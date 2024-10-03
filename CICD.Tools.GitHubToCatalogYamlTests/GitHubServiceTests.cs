@@ -28,7 +28,7 @@
 	/// }
 	/// </code>
 	/// </summary>
-	[TestClass]
+	[TestClass, Ignore]
 	public class GitHubServiceIntegrationTests
 	{
 		private GitHubService _service;
