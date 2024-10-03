@@ -16,6 +16,12 @@
 		Task<bool> CreateCatalogIdentifierAsync(string catalogIdentifier);
 
 		/// <summary>
+		/// Deletes a GitHub repository variable named 'catalogIdentifier'.
+		/// </summary>
+		/// <returns>A task representing the asynchronous operation, containing a boolean indicating whether the operation was successful.</returns>
+		Task<bool> DeleteCatalogIdentifierAsync();
+
+		/// <summary>
 		/// Retrieves the 'catalogIdentifier' variable from the GitHub repository.
 		/// </summary>
 		/// <returns>A task representing the asynchronous operation, containing the catalog identifier as a string, or null if the retrieval fails.</returns>

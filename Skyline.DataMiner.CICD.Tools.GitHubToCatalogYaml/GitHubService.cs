@@ -29,7 +29,7 @@
 			this.key = key;
 			_logger = logger;
 			_httpClient = httpClient;
-			githubRoot = $"https://api.github.com/repos/{githubRepository}/";
+			githubRoot = $"https://api.github.com/repos/{githubRepository}";
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@
 		/// <returns>A task representing the asynchronous operation, containing a boolean indicating whether the operation was successful.</returns>
 		public async Task<bool> CreateCatalogIdentifierAsync(string catalogIdentifier)
 		{
-			var requestUrl = $"{githubRoot}actions/variables";
+			var requestUrl = $"{githubRoot}/actions/variables";
 			var content = new StringContent(JsonSerializer.Serialize(new
 			{
 				name = "catalogIdentifier",
@@ -51,7 +51,7 @@
 				Content = content
 			};
 			request.Headers.Add("Authorization", $"Bearer {key}");
-			request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+			request.Headers.Add("User-Agent", "GitHubToCatalogYaml");
 
 			var response = await _httpClient.SendAsync(request);
 			if (response.IsSuccessStatusCode)
@@ -70,10 +70,10 @@
 		/// <returns>A task representing the asynchronous operation, containing the catalog identifier as a string, or null if the retrieval fails.</returns>
 		public async Task<string> GetCatalogIdentifierAsync()
 		{
-			var requestUrl = $"{githubRoot}actions/variables/catalogIdentifier";
+			var requestUrl = $"{githubRoot}/actions/variables/catalogIdentifier";
 			var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 			request.Headers.Add("Authorization", $"Bearer {key}");
-			request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+			request.Headers.Add("User-Agent", "GitHubToCatalogYaml");
 
 			var response = await _httpClient.SendAsync(request);
 			if (response.IsSuccessStatusCode)
@@ -91,15 +91,39 @@
 		}
 
 		/// <summary>
+		/// Deletes a GitHub repository variable named 'catalogIdentifier'.
+		/// </summary>
+		/// <returns>A task representing the asynchronous operation, containing a boolean indicating whether the operation was successful.</returns>
+		public async Task<bool> DeleteCatalogIdentifierAsync()
+		{
+			var requestUrl = $"{githubRoot}/actions/variables/catalogIdentifier";
+
+			var request = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
+			request.Headers.Add("Authorization", $"Bearer {key}");
+			request.Headers.Add("User-Agent", "GitHubToCatalogYaml");
+
+			var response = await _httpClient.SendAsync(request);
+			if (response.IsSuccessStatusCode)
+			{
+				_logger.LogInformation("Successfully deleted catalogIdentifier in GitHub repository.");
+				return true;
+			}
+
+			_logger.LogError($"Failed to delete catalogIdentifier in GitHub repository: {response.StatusCode}");
+			return false;
+		}
+
+
+		/// <summary>
 		/// Retrieves the repository description from the GitHub repository.
 		/// </summary>
 		/// <returns>A task representing the asynchronous operation, containing the repository description as a string, or null if the retrieval fails.</returns>
 		public async Task<string> GetRepositoryDescriptionAsync()
 		{
-			var requestUrl = $"{githubRoot}";
+			var requestUrl = $"{githubRoot}";  // URL should already be in the format 'https://api.github.com/repos/{owner}/{repo}/'
 			var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 			request.Headers.Add("Authorization", $"Bearer {key}");
-			request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+			request.Headers.Add("User-Agent", "GitHubToCatalogYaml");
 
 			var response = await _httpClient.SendAsync(request);
 			if (response.IsSuccessStatusCode)
@@ -110,11 +134,19 @@
 				{
 					return description.GetString();
 				}
+				else
+				{
+					_logger.LogWarning("Repository description not found in the response.");
+				}
+			}
+			else
+			{
+				_logger.LogError($"Failed to retrieve repository description: {response.StatusCode} - {response.ReasonPhrase}");
 			}
 
-			_logger.LogError($"Failed to retrieve repository description: {response.StatusCode}");
 			return null;
 		}
+
 
 		/// <summary>
 		/// Retrieves the topics (tags) from the GitHub repository's ABOUT section.
@@ -122,11 +154,11 @@
 		/// <returns>A task representing the asynchronous operation, containing a list of repository topics (tags), or null if the retrieval fails.</returns>
 		public async Task<List<string>> GetRepositoryTopicsAsync()
 		{
-			var requestUrl = $"{githubRoot}topics";
+			var requestUrl = $"{githubRoot}/topics";
 			var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 			request.Headers.Add("Authorization", $"Bearer {key}");
 			request.Headers.Add("Accept", "application/vnd.github.mercy-preview+json");
-			request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+			request.Headers.Add("User-Agent", "GitHubToCatalogYaml");
 
 			var response = await _httpClient.SendAsync(request);
 			if (response.IsSuccessStatusCode)
