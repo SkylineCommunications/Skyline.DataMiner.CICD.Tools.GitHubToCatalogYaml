@@ -123,13 +123,13 @@
         private async Task CheckTags(CatalogYaml catalogYaml)
         {
             logger.LogDebug("Checking if Tags exist, extending with retrieved GitHub repository topics...");
-            if (catalogYaml.Tags == null || !catalogYaml.Tags.Any())
+            if (catalogYaml.Tags == null || catalogYaml.Tags.Count == 0)
             {
                 catalogYaml.Tags = new List<string>();
             }
 
             var topics = await service.GetRepositoryTopicsAsync();
-            if (topics != null && topics.Any())
+            if (topics is { Count: > 0 })
             {
                 catalogYaml.Tags.AddRange(topics);
                 catalogYaml.Tags = catalogYaml.Tags.Distinct().ToList();
@@ -250,18 +250,13 @@
         private static string InferArtifactContentType(string keyword)
         {
             // Check if the keyword exists in the dictionary
-            if (!Constants.ArtifactTypeMap.TryGetValue(keyword.ToUpper(), out var contentType))
+            if (Constants.ArtifactTypeMap.TryGetValue(keyword.ToUpper(), out var contentType))
             {
-                foreach (var typeName in Constants.ArtifactTypeMap.Values)
-                {
-                    if (typeName.Equals(keyword, StringComparison.OrdinalIgnoreCase))
-                    {
-                        contentType = typeName;
-                    }
-                }
+                return contentType;
             }
 
-            return contentType ?? String.Empty;
+            return Constants.ArtifactTypeMap.FirstOrDefault(pair => pair.Value.Equals(keyword, StringComparison.OrdinalIgnoreCase)).Key ??
+                   String.Empty;
         }
 
         /// <summary>
