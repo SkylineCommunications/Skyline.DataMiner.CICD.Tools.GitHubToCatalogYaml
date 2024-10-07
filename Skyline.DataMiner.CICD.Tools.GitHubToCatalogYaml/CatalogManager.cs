@@ -239,7 +239,7 @@
 
             var yamlContent = fs.File.ReadAllText(filePath);
             logger.LogDebug("Existing Configuration File Parsed.");
-            return deserializer.Deserialize<CatalogYaml>(yamlContent);
+            return deserializer.Deserialize<CatalogYaml>(yamlContent) ?? new CatalogYaml();
         }
 
         /// <summary>

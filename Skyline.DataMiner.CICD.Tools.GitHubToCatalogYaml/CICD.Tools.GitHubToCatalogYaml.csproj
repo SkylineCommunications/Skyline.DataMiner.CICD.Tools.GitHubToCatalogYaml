@@ -39,5 +39,8 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="CICD.Tools.GitHubToCatalogYamlTests" />
+
+    <!-- Needed for Moq -->
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
 	</ItemGroup>
 </Project>
