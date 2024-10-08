@@ -106,11 +106,11 @@
         private async Task CheckShortDescription(CatalogYaml catalogYaml)
         {
             logger.LogDebug("Checking if Short_description exists, otherwise retrieve the GitHub repository description...");
-            if (String.IsNullOrWhiteSpace(catalogYaml.Short_description))
+            if (String.IsNullOrWhiteSpace(catalogYaml.ShortDescription))
             {
                 var description = await service.GetRepositoryDescriptionAsync() ?? "No description available";
 
-                catalogYaml.Short_description = description;
+                catalogYaml.ShortDescription = description;
                 logger.LogDebug($"Description applied: {description}");
             }
         }

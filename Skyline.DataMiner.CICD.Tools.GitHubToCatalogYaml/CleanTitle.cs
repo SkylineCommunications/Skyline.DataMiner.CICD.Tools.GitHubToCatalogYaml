@@ -55,13 +55,13 @@
         }
 
         /// <summary>
-        /// Gets or sets the inferred item type from the repository name, if available.
+        /// Gets the inferred item type from the repository name, if available.
         /// This value is determined based on a mapping of known artifact types in the repository name.
         /// </summary>
         public string FoundItemType { get; }
 
         /// <summary>
-        /// Gets or sets the cleaned-up version of the repository name.
+        /// Gets the cleaned-up version of the repository name.
         /// The name is formatted by removing underscores and any owner prefixes, and applying specific guidelines if the name follows the expected format.
         /// </summary>
         public string Value { get; }
