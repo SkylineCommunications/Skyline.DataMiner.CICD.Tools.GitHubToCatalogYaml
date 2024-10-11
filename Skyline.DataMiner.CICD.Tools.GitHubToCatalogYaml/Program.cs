@@ -58,7 +58,7 @@
             };
 
             var catalogIdentifier = new Option<string>(
-              name: "--catalogIdentifier",
+              name: "--catalog-identifier",
               description: "(optional) The catalog identifier. If not provided, then the provided token must be a PAT with access to Actions/Variables.")
             {
                 IsRequired = false
