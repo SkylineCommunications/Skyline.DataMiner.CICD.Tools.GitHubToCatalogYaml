@@ -19,6 +19,7 @@
     [TestClass]
     public class CatalogManagerTests
     {
+        private Mock<IDirectoryIO> mockDirectory;
         private Mock<IFileSystem> mockFileSystem;
         private Microsoft.Extensions.Logging.ILogger logger;
         private Mock<IGitHubService> mockGitHubService;
@@ -26,6 +27,7 @@
         private const string workspace = "testWorkspace";
         private const string catalogFilePath = "testWorkspace/catalog.yml";
         private const string manifestFilePath = "testWorkspace/manifest.yml";
+        private const string autoGeneratorFilePath = "testWorkspace/.githubtocatalog/auto-generated-catalog.yml";
 
         [TestInitialize]
         public void Setup()
@@ -43,6 +45,12 @@
 
             mockFileSystem.Setup(fs => fs.Path.Combine(workspace, "catalog.yml")).Returns(catalogFilePath);
             mockFileSystem.Setup(fs => fs.Path.Combine(workspace, "manifest.yml")).Returns(manifestFilePath);
+            mockFileSystem.Setup(fs => fs.Path.Combine(workspace, ".githubtocatalog", "auto-generated-catalog.yml")).Returns(autoGeneratorFilePath);
+
+            mockDirectory = new Mock<IDirectoryIO>();
+            mockDirectory.Setup(dir => dir.CreateDirectory(It.IsAny<string>()));
+
+            mockFileSystem.Setup(fs => fs.Directory).Returns(mockDirectory.Object);
 
             catalogManager = new CatalogManager(mockFileSystem.Object, logger, mockGitHubService.Object, workspace);
         }
@@ -256,9 +264,9 @@
 
             mockFileSystem.Setup(fs => fs.Path.Combine(workspace, "catalog.yml")).Returns(catalogFilePath);
             mockFileSystem.Setup(fs => fs.Path.Combine(workspace, "manifest.yml")).Returns(manifestFilePath);
+            mockFileSystem.Setup(fs => fs.Directory.CreateDirectory(It.IsAny<string>()));
 
             catalogManager = new CatalogManager(mockFileSystem.Object, mockLogger.Object, mockGitHubService.Object, workspace);
-
 
             var repoName = "SLC-AS-testRepo";
             var yamlContent = "id: testId\ntitle: ExistingTitle\nshort_description: test description\ntags: [testTag]";

@@ -317,6 +317,7 @@
             logger.LogDebug($"Serializing and saving the updated catalog.yml file with path: {outputPath}.");
 
             var updatedYaml = serializer.Serialize(catalogYaml);
+            fs.Directory.CreateDirectory(outputPath);
             fs.File.WriteAllText(outputPath, updatedYaml);
         }
     }
