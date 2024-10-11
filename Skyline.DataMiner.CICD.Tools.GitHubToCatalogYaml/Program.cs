@@ -57,19 +57,27 @@
                 IsRequired = true
             };
 
+            var catalogIdentifier = new Option<string>(
+              name: "--catalogIdentifier",
+              description: "(optional) The catalog identifier. If not provided, then the provided token must be a PAT with access to Actions/Variables.")
+            {
+                IsRequired = false
+            };
+
             var rootCommand = new RootCommand("Extends or creates a catalog.yml file with data retrieved from GitHub")
             {
                 isDebug,
                 githubToken,
                 githubRepository,
                 workspace,
+                catalogIdentifier
             };
 
-            rootCommand.SetHandler(Process, isDebug, githubToken, githubRepository, workspace);
+            rootCommand.SetHandler(Process, isDebug, githubToken, githubRepository, workspace, catalogIdentifier);
 
             return await rootCommand.InvokeAsync(args);
         }
-        private static async Task<int> Process(bool isDebug, string githubToken, string githubRepository, string workspace)
+        private static async Task<int> Process(bool isDebug, string githubToken, string githubRepository, string workspace, string catalogIdentifier)
         {
             try
             {
@@ -90,7 +98,7 @@
                     var catalogManager = new CatalogManager(fs, logger, gitHubService, workspace);
 
                     // Call the method to process the catalog.yml file
-                    await catalogManager.ProcessCatalogYamlAsync(githubRepository);
+                    await catalogManager.ProcessCatalogYamlAsync(githubRepository, catalogIdentifier);
 
                     logger.LogInformation("Process completed successfully.");
                 }

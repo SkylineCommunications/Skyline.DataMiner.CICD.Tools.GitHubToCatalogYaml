@@ -33,15 +33,15 @@
             this.service = service;
             this.workspace = workspace;
         }
-
         /// <summary>
         /// Processes the catalog YAML file for the specified GitHub repository. It checks and updates various fields such as ID, description, tags, title, and type.
         /// If no catalog file is found, it attempts to create one from the manifest file.
         /// </summary>
         /// <param name="repoName">The name of the GitHub repository to process.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="repoName"/> is null or empty.</exception>
+        /// <param name="catalogIdentifier">The catalog identifier to be used in processing the catalog YAML file.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="repoName"/> or <paramref name="catalogIdentifier"/> is null or empty.</exception>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        public async Task ProcessCatalogYamlAsync(string repoName)
+        public async Task ProcessCatalogYamlAsync(string repoName, string catalogIdentifier = "")
         {
             if (String.IsNullOrWhiteSpace(repoName)) throw new ArgumentNullException(nameof(repoName));
 
@@ -57,7 +57,14 @@
 
             CatalogYaml catalogYaml = CreateCatalogYaml(deserializer, out string filePath);
 
-            await CheckId(catalogYaml);
+            if (String.IsNullOrWhiteSpace(catalogIdentifier))
+            {
+                await CheckId(catalogYaml);
+            }
+            else
+            {
+                catalogYaml.Id = catalogIdentifier;
+            }
 
             await CheckShortDescription(catalogYaml);
 
