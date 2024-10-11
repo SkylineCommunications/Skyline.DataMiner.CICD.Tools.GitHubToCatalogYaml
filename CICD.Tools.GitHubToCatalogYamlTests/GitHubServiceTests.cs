@@ -67,29 +67,6 @@
         }
 
         /// <summary>
-        /// Integration test for creating and getting a catalog identifier variable in the GitHub repository.
-        /// </summary>
-        [TestMethod]
-        public async Task CreateAndGetCatalogIdentifierAsyncTest()
-        {
-            // Arrange
-            var guid = Guid.NewGuid().ToString();
-
-            // Act
-            var createdOk = await _service.CreateCatalogIdentifierAsync(guid);
-            Thread.Sleep(1000);
-            var returnedGuid = await _service.GetCatalogIdentifierAsync();
-            bool deleted = await _service.DeleteCatalogIdentifierAsync();
-
-            // Assert
-            Assert.IsTrue(createdOk, "The catalog identifier was not successfully created in the GitHub repository.");
-            Assert.IsNotNull(returnedGuid, "Failed to retrieve the catalog identifier from the GitHub repository.");
-            returnedGuid.Should().Be(guid);
-            deleted.Should().BeTrue();
-        }
-
-
-        /// <summary>
         /// Integration test for retrieving the repository description from the GitHub repository.
         /// </summary>
         [TestMethod]

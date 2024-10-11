@@ -9,25 +9,6 @@
     internal interface IGitHubService
     {
         /// <summary>
-        /// Creates a GitHub repository variable named 'catalogIdentifier'.
-        /// </summary>
-        /// <param name="catalogIdentifier">The catalog identifier to store as a repository variable.</param>
-        /// <returns>A task representing the asynchronous operation, containing a boolean indicating whether the operation was successful.</returns>
-        Task<bool> CreateCatalogIdentifierAsync(string catalogIdentifier);
-
-        /// <summary>
-        /// Deletes a GitHub repository variable named 'catalogIdentifier'.
-        /// </summary>
-        /// <returns>A task representing the asynchronous operation, containing a boolean indicating whether the operation was successful.</returns>
-        Task<bool> DeleteCatalogIdentifierAsync();
-
-        /// <summary>
-        /// Retrieves the 'catalogIdentifier' variable from the GitHub repository.
-        /// </summary>
-        /// <returns>A task representing the asynchronous operation, containing the catalog identifier as a string, or null if the retrieval fails.</returns>
-        Task<string> GetCatalogIdentifierAsync();
-
-        /// <summary>
         /// Retrieves the repository description from the GitHub repository.
         /// </summary>
         /// <returns>A task representing the asynchronous operation, containing the repository description as a string, or null if the retrieval fails.</returns>

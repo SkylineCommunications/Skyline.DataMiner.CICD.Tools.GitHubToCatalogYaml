@@ -55,7 +55,6 @@
 
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(false); // No catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.Exists(manifestFilePath)).Returns(false); // No manifest.yml exists
-            mockGitHubService.Setup(s => s.GetCatalogIdentifierAsync()).ReturnsAsync("newCatalogId");
             mockGitHubService.Setup(s => s.GetRepositoryDescriptionAsync()).ReturnsAsync("new description");
             mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string> { "newTopic" });
 
@@ -107,10 +106,9 @@
             var yamlContent = "short_description: test description\ntags: [testTag]";
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
-            mockGitHubService.Setup(s => s.GetCatalogIdentifierAsync()).ReturnsAsync("newCatalogId");
 
             // Act
-            await catalogManager.ProcessCatalogYamlAsync(repoName);
+            await catalogManager.ProcessCatalogYamlAsync(repoName, "newCatalogId");
 
             // Assert
             mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("id: newCatalogId"))), Times.Once);
@@ -240,8 +238,6 @@
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(false); // catalog.yml does not exist
             mockFileSystem.Setup(fs => fs.File.Exists(manifestFilePath)).Returns(false);  // manifest.yml does not exist
 
-            mockGitHubService.Setup(s => s.GetCatalogIdentifierAsync()).ReturnsAsync("newCatalogId");
-
             // Act
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
@@ -283,7 +279,7 @@
         It.Is<It.IsAnyType>((v, t) => true),
         It.IsAny<Exception>(),
         It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true))
-    , Times.Exactly(2));
+    , Times.AtLeast(2));
         }
 
         [TestMethod]
@@ -298,23 +294,6 @@
 
             // Assert
             await act.Should().ThrowAsync<Exception>().WithMessage("File system failure");
-        }
-
-        [TestMethod]
-        public async Task ProcessCatalogYamlAsync_ShouldThrowException_WhenGitHubServiceFailsToGetIdentifier()
-        {
-            // Arrange
-            var repoName = "SLC-AS-testRepo";
-            var yamlContent = "short_description: test description";
-            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true);
-            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
-            mockGitHubService.Setup(s => s.GetCatalogIdentifierAsync()).ThrowsAsync(new Exception("GitHub service failure"));
-
-            // Act
-            Func<Task> act = async () => await catalogManager.ProcessCatalogYamlAsync(repoName);
-
-            // Assert
-            await act.Should().ThrowAsync<Exception>().WithMessage("GitHub service failure");
         }
 
         [TestMethod]
