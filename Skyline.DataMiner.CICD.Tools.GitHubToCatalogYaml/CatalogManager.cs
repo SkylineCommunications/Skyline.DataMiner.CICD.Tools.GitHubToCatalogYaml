@@ -318,6 +318,10 @@
 
             var updatedYaml = serializer.Serialize(catalogYaml);
             fs.Directory.CreateDirectory(outputPath);
+            var parentDir = fs.File.GetParentDirectory(outputPath);
+
+            // Required by GitHub to change existing files.
+            fs.Directory.TryAllowWritesOnDirectory(parentDir);
             fs.File.WriteAllText(outputPath, updatedYaml);
         }
     }
