@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -322,6 +323,10 @@
 
             // Required by GitHub to change existing files.
             fs.Directory.TryAllowWritesOnDirectory(parentDir);
+
+            // Delete the file if it already exists. Overwriting an existing file is not allowed in GitHub.
+            fs.File.DeleteFile(outputPath);
+            Thread.Sleep(500);
             fs.File.WriteAllText(outputPath, updatedYaml);
         }
     }
