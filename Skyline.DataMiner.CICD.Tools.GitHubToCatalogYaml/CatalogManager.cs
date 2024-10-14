@@ -316,17 +316,15 @@
         private void SaveFile(CatalogYaml catalogYaml, ISerializer serializer, string outputPath)
         {
             logger.LogDebug($"Serializing and saving the updated catalog.yml file with path: {outputPath}.");
-
-            var updatedYaml = serializer.Serialize(catalogYaml);
-            fs.Directory.CreateDirectory(outputPath);
-            var parentDir = fs.File.GetParentDirectory(outputPath);
-
-            // Required by GitHub to change existing files.
-            fs.Directory.TryAllowWritesOnDirectory(parentDir);
-
             // Delete the file if it already exists. Overwriting an existing file is not allowed in GitHub.
             fs.File.DeleteFile(outputPath);
             Thread.Sleep(500);
+            var updatedYaml = serializer.Serialize(catalogYaml);
+
+            var parentDir = fs.Path.GetDirectoryName(outputPath);         
+            fs.Directory.CreateDirectory(parentDir);
+            fs.Directory.TryAllowWritesOnDirectory(parentDir);
+
             fs.File.WriteAllText(outputPath, updatedYaml);
         }
     }
