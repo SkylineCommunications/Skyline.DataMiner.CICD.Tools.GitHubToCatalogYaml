@@ -107,6 +107,25 @@
         }
 
         [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldSetSourceCodeUrl_WhenMissing()
+        {
+            // Arrange
+            var repoName = "SkylineCommunications/KPN-AS-OutageReport";
+            var yamlContent = "id: testId\nshort_description: test description"; // No SourceCodeUrl in the initial YAML
+            var expectedSourceCodeUrl = $"https://github.com/{repoName}";
+
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true);
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent); // Simulate existing catalog.yml
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains($"source_code_url: {expectedSourceCodeUrl}"))), Times.Once);
+        }
+
+
+        [TestMethod]
         public async Task ProcessCatalogYamlAsync_ShouldAssignNewId_WhenIdIsMissing()
         {
             // Arrange
