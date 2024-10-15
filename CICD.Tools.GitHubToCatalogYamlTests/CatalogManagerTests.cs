@@ -16,6 +16,8 @@
     using Skyline.DataMiner.CICD.FileSystem;
     using Skyline.DataMiner.CICD.Tools.GitHubToCatalogYaml;
 
+    using YamlDotNet.Serialization;
+
     [TestClass]
     public class CatalogManagerTests
     {
@@ -453,6 +455,67 @@
 
             // Assert
             mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("short_description: from catalog"))), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task ProcessCatalogYamlAsync_SaveFileShouldAccessFileSystemInCorrectOrderForBothFiles()
+        {
+            // Arrange
+            var repoName = "SLC-AS-testRepo";
+            var expectedCatalogPath = "testWorkspace/catalog.yml";
+            var expectedAutoGenPath = "testWorkspace/.githubtocatalog/auto-generated-catalog.yml";
+            var manifestYamlContent = "id: manifestId\nshort_description: from manifest";
+
+            // Simulate the YAML serialization
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(manifestFilePath)).Returns(manifestYamlContent);
+            // Setup mocks for file system interactions
+            var mockSequence = new MockSequence();
+
+            // Ensure the operations for 'catalog.yml' happen in sequence
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.File.DeleteFile(expectedCatalogPath));
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Path.GetDirectoryName(expectedCatalogPath))
+                .Returns("testDirectory");
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Directory.CreateDirectory("testDirectory"));
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Directory.TryAllowWritesOnDirectory("testDirectory"))
+                .Returns(true);
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.File.WriteAllText(expectedCatalogPath, It.IsAny<String>()));
+
+            // Ensure the operations for 'auto-generated-catalog.yml' happen in sequence
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.File.DeleteFile(expectedAutoGenPath));
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Path.GetDirectoryName(expectedAutoGenPath))
+                .Returns("testAutoGenDirectory");
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Directory.CreateDirectory("testAutoGenDirectory"));
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.Directory.TryAllowWritesOnDirectory("testAutoGenDirectory"))
+                .Returns(true);
+            mockFileSystem.InSequence(mockSequence)
+                .Setup(fs => fs.File.WriteAllText(expectedAutoGenPath, It.IsAny<String>()));
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            // Verify that the catalog.yml file system interactions occurred in the correct order
+            mockFileSystem.Verify(fs => fs.File.DeleteFile(expectedCatalogPath), Times.Once);
+            mockFileSystem.Verify(fs => fs.Path.GetDirectoryName(expectedCatalogPath), Times.Once);
+            mockFileSystem.Verify(fs => fs.Directory.CreateDirectory("testDirectory"), Times.Once);
+            mockFileSystem.Verify(fs => fs.Directory.TryAllowWritesOnDirectory("testDirectory"), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(expectedCatalogPath, It.IsAny<String>()), Times.Once);
+
+            // Verify that the auto-generated-catalog.yml file system interactions occurred in the correct order
+            mockFileSystem.Verify(fs => fs.File.DeleteFile(expectedAutoGenPath), Times.Once);
+            mockFileSystem.Verify(fs => fs.Path.GetDirectoryName(expectedAutoGenPath), Times.Once);
+            mockFileSystem.Verify(fs => fs.Directory.CreateDirectory("testAutoGenDirectory"), Times.Once);
+            mockFileSystem.Verify(fs => fs.Directory.TryAllowWritesOnDirectory("testAutoGenDirectory"), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(expectedAutoGenPath, It.IsAny<String>()), Times.Once);
         }
     }
 }
