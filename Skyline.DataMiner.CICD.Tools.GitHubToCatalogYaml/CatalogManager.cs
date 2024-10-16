@@ -70,7 +70,7 @@
 
             CleanTitle parsedRepoName = CheckTitle(repoName, catalogYaml);
 
-            // Perform this after CheckTags
+            // Perform this after CheckTags.
             CheckType(catalogYaml, parsedRepoName);
 
             string outputPath = filePath ?? fs.Path.Combine(workspace, "catalog.yml");
@@ -185,6 +185,8 @@
             if (topics is { Count: > 0 })
             {
                 catalogYaml.Tags.AddRange(topics);
+
+                // Remove duplicates
                 catalogYaml.Tags = catalogYaml.Tags.Distinct().ToList();
                 logger.LogDebug("Distinct GitHub Topics found and applied.");
             }
@@ -231,8 +233,8 @@
                 logger.LogDebug($"Item Type could be inferred from repository name {catalogYaml.Type}.");
             }
 
-            // If we still don't have a type, check topics for matching ArtifactContentType
-            if (String.IsNullOrWhiteSpace(catalogYaml.Type) && catalogYaml.Tags != null)
+            // Always check the tags
+            if (catalogYaml.Tags != null)
             {
                 foreach (var topic in catalogYaml.Tags)
                 {
@@ -240,6 +242,7 @@
                     if (!String.IsNullOrWhiteSpace(inferredType))
                     {
                         catalogYaml.Type = inferredType;
+                        catalogYaml.Tags.Remove(topic);
                         logger.LogDebug($"Item Type could be inferred from repository topics {catalogYaml.Type}.");
                         break;
                     }

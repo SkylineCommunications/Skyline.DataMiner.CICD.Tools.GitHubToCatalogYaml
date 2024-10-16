@@ -168,7 +168,7 @@
             var yamlContent = "id: testId\nshort_description: test description";
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
-            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string> { "newTag" });
+            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string> { "automationscript", "newTag" });
 
             // Act
             await catalogManager.ProcessCatalogYamlAsync(repoName);
