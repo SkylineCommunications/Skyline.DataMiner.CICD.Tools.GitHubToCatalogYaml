@@ -434,7 +434,7 @@
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: gqidatasource"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: adhocdatasource"))), Times.Once);
         }
 
         [TestMethod]

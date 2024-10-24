@@ -92,13 +92,15 @@
         private static string InferArtifactContentType(string keyword)
         {
             // Check if the keyword exists in the dictionary
-            if (Constants.ArtifactTypeMap.TryGetValue(keyword.ToUpper(), out var contentType))
+            var contentType = Constants.ArtifactTypeMap.FirstOrDefault(p => p.IsMatch(keyword));
+            if (contentType != null)
             {
-                return contentType;
+                return contentType.CatalogName;
             }
-
-            return Constants.ArtifactTypeMap.FirstOrDefault(pair => pair.Value.Equals(keyword, StringComparison.OrdinalIgnoreCase)).Value ??
-                   String.Empty;
+            else
+            {
+                return String.Empty;
+            }
         }
 
         /// <summary>

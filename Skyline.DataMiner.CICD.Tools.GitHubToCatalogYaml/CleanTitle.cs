@@ -30,9 +30,11 @@
             var splitDash = githubRepoName.Split('-');
             if (splitDash.Length > 2 && splitDash[0].Length < 10)
             {
-                if (Constants.ArtifactTypeMap.TryGetValue(splitDash[1].ToUpper(), out string foundItemType))
+                var foundItemType = Constants.ArtifactTypeMap.FirstOrDefault(p => p.IsMatch(splitDash[1]));
+
+                if (foundItemType != null)
                 {
-                    FoundItemType = foundItemType;
+                    FoundItemType = foundItemType.CatalogName;
                     hasGuideLineFormat = true;
                 }
                 else

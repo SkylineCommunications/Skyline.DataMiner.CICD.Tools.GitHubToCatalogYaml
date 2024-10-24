@@ -13,7 +13,7 @@
         [DataRow("SkylineCommunications/PCKTV-AS-RegressionTests", "RegressionTests", "automationscript")]
         [DataRow("SkylineCommunications/RBM-AS-Playout", "Playout", "automationscript")]
         [DataRow("SkylineCommunications/SLC-Doc-Vodafone-Deutschland-GmbH", "Vodafone-Deutschland-GmbH", "documentation")]
-        [DataRow("SkylineCommunications/FOXA-GQIDS-GetAppearTVData", "GetAppearTVData", "gqidatasource")]
+        [DataRow("SkylineCommunications/FOXA-GQIDS-GetAppearTVData", "GetAppearTVData", "adhocdatasource")]
         [DataRow("SkylineCommunications/YLE-C-Avid-iNewsOrder-Ingest", "Avid-iNewsOrder-Ingest", "connector")]
         [DataRow("SkylineCommunications/ngx-dwa-theme-creation-helper", "ngx-dwa-theme-creation-helper", null)]
         public void CleanTitleTestHappy(string input, string expectedTitle, string expectedType)
