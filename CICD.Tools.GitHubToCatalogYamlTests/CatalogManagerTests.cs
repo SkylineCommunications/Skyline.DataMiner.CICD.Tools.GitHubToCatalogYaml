@@ -174,7 +174,7 @@
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains($"tags:{Environment.NewLine}- newTag"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains($"tags:{Environment.NewLine}  - newTag"))), Times.Once);
         }
 
         [TestMethod]

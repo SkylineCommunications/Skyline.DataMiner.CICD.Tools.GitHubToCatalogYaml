@@ -55,6 +55,7 @@
 
             var serializer = new SerializerBuilder()
                              .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                             .WithIndentedSequences()
                              .Build();
 
             CatalogYaml catalogYaml = CreateCatalogYaml(deserializer, out string filePath);
