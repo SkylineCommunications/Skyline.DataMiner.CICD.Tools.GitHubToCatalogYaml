@@ -21,6 +21,8 @@
 		<Authors>SkylineCommunications</Authors>
 		<Company>Skyline Communications</Company>
 		<Description>Extends or creates a catalog.yml file with data retrieved from GitHub</Description>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/SkylineCommunications/Skyline.DataMiner.CICD.Tools.GitHubToCatalogYaml</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
