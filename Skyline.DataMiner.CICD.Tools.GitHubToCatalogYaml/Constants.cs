@@ -25,7 +25,8 @@
             { new ArtifactType(new[] { "SC" }, "scriptedconnector", "Scriped Connector") },
             { new ArtifactType(new[] { "T" }, "testingsolution", "Testing Solution") },
             { new ArtifactType(new[] { "UDAPI" }, "userdefinedapi", "User Defined API") },
-            { new ArtifactType(new[] { "V" }, "visio", "Visio") }
+            { new ArtifactType(new[] { "V" }, "visio", "Visio") },
+            { new ArtifactType(new[] { "LCA" }, "lowcodeapp", "Low-Code App") }
         };
     }
 
