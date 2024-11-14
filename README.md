@@ -58,6 +58,7 @@ If neither condition is met, the workflow will fail, and an error will be return
 - **T**: `testingsolution`
 - **UDAPI**: `userdefinedapi`
 - **V**: `visio`
+- **LCA**: `lowcodeapp`
 
 ## Installation & Usage
 
