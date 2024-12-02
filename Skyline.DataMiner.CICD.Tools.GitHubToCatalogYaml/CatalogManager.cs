@@ -184,13 +184,19 @@
                 catalogYaml.Tags = new List<string>();
             }
 
+            if(catalogYaml.Tags.Count >= 5)
+            {
+                logger.LogDebug("Catalog YAML has the max amount of tags already. Skipping the adding GitHub topics step.");
+                return;
+            }
+
             var topics = await service.GetRepositoryTopicsAsync();
             if (topics is { Count: > 0 })
             {
                 catalogYaml.Tags.AddRange(topics);
 
                 // Remove duplicates
-                catalogYaml.Tags = catalogYaml.Tags.Distinct().ToList();
+                catalogYaml.Tags = catalogYaml.Tags.Distinct().Take(5).ToList();
                 logger.LogDebug("Distinct GitHub Topics found and applied.");
             }
         }
