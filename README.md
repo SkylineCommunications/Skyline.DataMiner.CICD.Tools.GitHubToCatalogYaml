@@ -21,12 +21,26 @@ The **Skyline.DataMiner.CICD.Tools.GitHubToCatalogYaml** tool automates the crea
 | Variable: `CATALOGIDENTIFIER`  | `Id`                   | If not specified in the existing YAML or as a variable, an identifier is generated automatically for each catalog entry. |
 | Owners                         | `Owners`               | Customizable, with owner email, name, and URL settings.                                                         |
 
-## Auto-Generated Catalog YAML File
+## **Auto-Generated Catalog YAML File**
 
-This tool not only extends an existing `catalog.yml` or `manifest.yml` but also generates an `auto-generated-catalog.yml` file in the `.githubtocatalog` directory. This secondary file is essential because:
+**WARNING! DO NOT MODIFY THIS FILE.**
 
-1. **Tracking Catalog IDs**: By committing and pushing `auto-generated-catalog.yml`, the tool can create a unique ID on the first run and reuse this ID on future runs. This avoids duplicate catalog records that can occur if new IDs are generated in every workflow run.
-2. **Workflow Automation**: The `auto-generated-catalog.yml` is maintained separately to allow other processes to retrieve it as needed without modifying the primary catalog file in each update.
+This tool generates an `auto-generated-catalog.yml` file in the `.githubtocatalog` directory, alongside extending any existing `catalog.yml` or `manifest.yml` file. This secondary file is critical for the following reasons:
+
+1. **Tracking Catalog IDs:**  
+   Committing and pushing the `auto-generated-catalog.yml` allows the tool to create a unique Catalog ID on the first run and reuse it for future runs. This prevents duplicate catalog records, which can occur if new IDs are generated with each workflow run.
+
+2. **Workflow Automation:**  
+   The `auto-generated-catalog.yml` is maintained separately, enabling other processes to access it without modifying the primary catalog file during updates.
+
+
+
+## **Primary Catalog YAML File**
+
+If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by:
+
+- Creating a new `catalog.yml` file in the root of your repository and including only the modifications you want.
+- Alternatively, duplicating the entire `auto-generated-catalog.yml` file to the root of your repository and making adjustments as needed.
 
 ## Inferring Catalog Item Type
 
