@@ -8,7 +8,7 @@
     {
         public static readonly List<ArtifactType> ArtifactTypeMap = new List<ArtifactType>()
         {
-            { new ArtifactType(new[]{"AS"},"automationscript","Automation Script") },
+            { new ArtifactType(new[] { "AS" }, "automationscript", "Automation Script") },
             { new ArtifactType(new[] { "C" }, "connector", "Connector")},
             { new ArtifactType(new[] { "CF" }, "companionfile", "Companion File")},
             { new ArtifactType(new[] { "CHATOPS" }, "chatopsextension", "ChatOps Extension")},
