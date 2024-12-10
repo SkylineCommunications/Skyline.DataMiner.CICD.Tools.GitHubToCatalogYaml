@@ -40,25 +40,25 @@ If neither condition is met, the workflow will fail, and an error will be return
 
 ### Artifact Types
 
-- **AS**: `automationscript`
-- **C**: `connector`
-- **CF**: `companionfile`
-- **CHATOPS**: `chatopsextension`
-- **D**: `dashboard`
-- **DISMACRO**: `dismacro`
-- **DOC**: `documentation`
-- **F**: `functiondefinition`
-- **GQIDS**: `gqidatasource`or `adhocdatasource`
-- **GQIO**: `gqioperator`
-- **LSO**: `lifecycleserviceorchestration`
-- **PA**: `processautomation`
-- **PLS**: `profileloadscript`
-- **S**: `solution`
-- **SC**: `scriptedconnector`
-- **T**: `testingsolution`
-- **UDAPI**: `userdefinedapi`
-- **V**: `visio`
-- **LCA**: `lowcodeapp`
+- **AS**: `Automation`
+- **C**: `Connector`
+- **CF**: `Custom Solution`
+- **CHATOPS**: `ChatOps Extension`
+- **D**: `Dashboard`
+- **DISMACRO**: `Custom Solution`
+- **DOC**: `Custom Solution`
+- **F**: `Automation`
+- **GQIDS**: `Ad Hoc Data Source`
+- **GQIO**: `Data Transformer`
+- **LSO**: `Automation`
+- **PA**: `Automation`
+- **PLS**: `Automation`
+- **S**: `Custom Solution`
+- **SC**: `Scripted Connector`
+- **T**: `Custom Solution`
+- **UDAPI**: `User-Defined API`
+- **V**: `Visual Overview`
+- **LCA**: `Custom Solution`
 
 ## Installation & Usage
 
