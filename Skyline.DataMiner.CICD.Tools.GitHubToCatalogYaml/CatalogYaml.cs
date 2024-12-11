@@ -53,7 +53,9 @@
                                             "  Cannot contain newlines.\r\n" +
                                             "  Cannot contain leading or trailing whitespace characters.";
 
-        private const string typeComment = "[Required]\r\n" +
+        private const string typeComment = "WARNING! DO NOT CHANGE THIS FILE.\r\n" +
+                                           "If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by creating a `catalog.yml` file in the root of your repository.\r\n\r\n" +
+                                           "[Required]\r\n" +
                                            "Possible values for the Catalog item that can be deployed on a DataMiner System:\r\n" +
                                            "  - automationscript: If the Catalog item is a general-purpose DataMiner Automation script.\r\n" +
                                            "  - lifecycleserviceorchestration: If the Catalog item is a DataMiner Automation script designed to manage the life cycle of a service.\r\n" +
