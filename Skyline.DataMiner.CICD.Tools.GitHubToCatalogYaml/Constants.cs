@@ -8,25 +8,25 @@
     {
         public static readonly List<ArtifactType> ArtifactTypeMap = new List<ArtifactType>()
         {
-            { new ArtifactType(new[] { "AS" }, "automationscript", "Automation Script") },
-            { new ArtifactType(new[] { "C" }, "connector", "Connector")},
-            { new ArtifactType(new[] { "CF" }, "companionfile", "Companion File")},
-            { new ArtifactType(new[] { "CHATOPS" }, "chatopsextension", "ChatOps Extension")},
-            { new ArtifactType(new[] { "D" }, "dashboard", "Dashboard")},
-            { new ArtifactType(new[] { "DISMACRO" }, "dismacro", "DIS Macro")},
-            { new ArtifactType(new[] { "DOC" }, "documentation", "Documentation")},
-            { new ArtifactType(new[] { "F" }, "functiondefinition", "Function Definition")},
-            { new ArtifactType(new[] { "GQIDS" }, "adhocdatasource", "gqidatasource", "Ad Hoc Data Source")},
-            { new ArtifactType(new[] { "GQIO" }, "gqioperator", "GQI Operator")},
-            { new ArtifactType(new[] { "LSO" }, "lifecycleserviceorchestration", "Live Cycle Service Orchestration")},
-            { new ArtifactType(new[] { "PA" }, "processautomation", "Process Automation") },
-            { new ArtifactType(new[] { "PLS" }, "profileloadscript", "Profile Load Script") },
-            { new ArtifactType(new[] { "S" }, "solution", "Solution") },
-            { new ArtifactType(new[] { "SC" }, "scriptedconnector", "Scriped Connector") },
-            { new ArtifactType(new[] { "T" }, "testingsolution", "Testing Solution") },
-            { new ArtifactType(new[] { "UDAPI" }, "userdefinedapi", "User Defined API") },
-            { new ArtifactType(new[] { "V" }, "visio", "Visio") },
-            { new ArtifactType(new[] { "LCA" }, "lowcodeapp", "Low-Code App") }
+            { new ArtifactType(new[] { "AS" }, "Automation", "Automation Script") },
+            { new ArtifactType(new[] { "C" }, "Connector", "Connector")},
+            { new ArtifactType(new[] { "CF" }, "Custom Solution", "Companion File")},
+            { new ArtifactType(new[] { "CHATOPS" }, "ChatOps Extension", "ChatOps Extension")},
+            { new ArtifactType(new[] { "D" }, "Dashboard", "Dashboard")},
+            { new ArtifactType(new[] { "DISMACRO" }, "ChatOps Extension", "DIS Macro")},
+            { new ArtifactType(new[] { "DOC" }, "ChatOps Extension", "Documentation")},
+            { new ArtifactType(new[] { "F" }, "Automation", "Function Definition")},
+            { new ArtifactType(new[] { "GQIDS" }, "Ad Hoc Data Source", "gqidatasource", "Ad Hoc Data Source")},
+            { new ArtifactType(new[] { "GQIO" }, "Data Transformer", "GQI Operator")},
+            { new ArtifactType(new[] { "LSO" }, "Automation", "Live Cycle Service Orchestration")},
+            { new ArtifactType(new[] { "PA" }, "Automation", "Process Automation") },
+            { new ArtifactType(new[] { "PLS" }, "Automation", "Profile Load Script") },
+            { new ArtifactType(new[] { "S" }, "Custom Solution", "Solution") },
+            { new ArtifactType(new[] { "SC" }, "Scripted Connector", "Scriped Connector") },
+            { new ArtifactType(new[] { "T" }, "Custom Solution", "Testing Solution") },
+            { new ArtifactType(new[] { "UDAPI" }, "User-Defined API", "User Defined API") },
+            { new ArtifactType(new[] { "V" }, "Visual Overview", "Visio") },
+            { new ArtifactType(new[] { "LCA" }, "Custom Solution", "Low-Code App") }
         };
     }
 
