@@ -54,9 +54,7 @@
                                             "  Cannot contain leading or trailing whitespace characters.";
 
         private const string typeComment = "WARNING! DO NOT CHANGE THIS FILE.\r\n" +
-                                           "Overriding or extending this file can be done by:\r\n" +
-                                           "  - creating a new catalog.yml file in the root of your repository and writing only the things you want to adjust in there.\r\n" +
-                                           "  - You may also duplicate this entire file to the root of your repository and then adjust what you want.\r\n\r\n" +
+                                           "If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by creating a `catalog.yml` file in the root of your repository.\r\n\r\n" +
                                            "[Required]\r\n" +
                                            "Possible values for the Catalog item that can be deployed on a DataMiner System:\r\n" +
                                            "  - automationscript: If the Catalog item is a general-purpose DataMiner Automation script.\r\n" +

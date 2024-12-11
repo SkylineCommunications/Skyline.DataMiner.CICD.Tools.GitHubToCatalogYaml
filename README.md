@@ -25,7 +25,7 @@ The **Skyline.DataMiner.CICD.Tools.GitHubToCatalogYaml** tool automates the crea
 
 **WARNING! DO NOT MODIFY THIS FILE.**
 
-This tool generates an `auto-generated-catalog.yml` file in the `.githubtocatalog` directory, alongside extending any existing `catalog.yml` or `manifest.yml` file. This secondary file is critical for the following reasons:
+This tool generates an `auto-generated-catalog.yml` file in the `.githubtocatalog` directory, alongside extending any existing `catalog.yml` or `manifest.yml` file. This auto-generated file is critical for the following reasons:
 
 1. **Tracking Catalog IDs:**  
    Committing and pushing the `auto-generated-catalog.yml` allows the tool to create a unique Catalog ID on the first run and reuse it for future runs. This prevents duplicate catalog records, which can occur if new IDs are generated with each workflow run.
@@ -33,14 +33,10 @@ This tool generates an `auto-generated-catalog.yml` file in the `.githubtocatalo
 2. **Workflow Automation:**  
    The `auto-generated-catalog.yml` is maintained separately, enabling other processes to access it without modifying the primary catalog file during updates.
 
-
-
 ## **Primary Catalog YAML File**
 
-If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by:
-
-- Creating a new `catalog.yml` file in the root of your repository and including only the modifications you want.
-- Alternatively, duplicating the entire `auto-generated-catalog.yml` file to the root of your repository and making adjustments as needed.
+If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by creating a `catalog.yml` file in the root of your repository.
+This file does not have to contain all the fields, only the ones you wish to change will suffice.
 
 ## Inferring Catalog Item Type
 
