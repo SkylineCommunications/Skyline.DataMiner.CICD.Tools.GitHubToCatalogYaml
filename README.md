@@ -45,9 +45,8 @@ If neither condition is met, the workflow will fail, and an error will be return
 - **CF**: `Custom Solution`
 - **CHATOPS**: `ChatOps Extension`
 - **D**: `Dashboard`
-- **DISMACRO**: `Custom Solution`
 - **DOC**: `Custom Solution`
-- **F**: `Automation`
+- **F**: `Custom Solution`
 - **GQIDS**: `Ad Hoc Data Source`
 - **GQIO**: `Data Transformer`
 - **LSO**: `Automation`
