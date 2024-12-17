@@ -55,27 +55,16 @@
 
         private const string typeComment = "[Required]\r\n" +
                                            "Possible values for the Catalog item that can be deployed on a DataMiner System:\r\n" +
-                                           "  - automationscript: If the Catalog item is a general-purpose DataMiner Automation script.\r\n" +
-                                           "  - lifecycleserviceorchestration: If the Catalog item is a DataMiner Automation script designed to manage the life cycle of a service.\r\n" +
-                                           "  - profileloadscript: If the Catalog item is a DataMiner Automation script designed to load a standard DataMiner profile.\r\n" +
-                                           "  - userdefinedapi: If the Catalog item is a DataMiner Automation script designed as a user-defined API.\r\n" +
-                                           "  - adhocdatasource: If the Catalog item is a DataMiner Automation script designed for an ad hoc data source integration.\r\n" +
-                                           "  - chatopsextension: If the Catalog item is a DataMiner Automation script designed as a ChatOps extension.\r\n" +
-                                           "  - connector: If the Catalog item is a DataMiner XML connector.\r\n" +
-                                           "  - slamodel: If the Catalog item is a DataMiner XML connector designed as DataMiner Service Level Agreement model.\r\n" +
-                                           "  - enhancedservicemodel: If the Catalog item is a DataMiner XML connector designed as DataMiner enhanced service model.\r\n" +
-                                           "  - visio: If the Catalog item is a Microsoft Visio design.\r\n" +
-                                           "  - solution: If the Catalog item is a DataMiner Solution.\r\n" +
-                                           "  - testingsolution: If the Catalog item is a DataMiner Solution designed for automated testing and validation.\r\n" +
-                                           "  - samplesolution: If the Catalog item is a DataMiner Solution used for training and education.\r\n" +
-                                           "  - standardsolution: If the Catalog item is a DataMiner Solution that is an out-of-the-box solution for a specific use case or application.\r\n" +
-                                           "  - dashboard: If the Catalog item is a DataMiner dashboard.\r\n" +
-                                           "  - lowcodeapp: If the Catalog item is a DataMiner low-code app.\r\n" +
-                                           "  - datatransformer: If the Catalog item is a Data Transformer.\r\n" +
-                                           "  - dataquery: If the Catalog item is a GQI data query.\r\n" +
-                                           "  - functiondefinition: If the Catalog item is a DataMiner function definition.\r\n" +
-                                           "  - scriptedconnector: If the Catalog item is a DataMiner scripted connector.\r\n" +
-                                           "  - bestpracticesanalyzer: If the Catalog item is a DataMiner Best Practices Analysis file.";
+                                           "  - Automation: If the Catalog item is a general-purpose DataMiner Automation script.\r\n" +
+                                           "  - User-Defined API: If the Catalog item is a DataMiner Automation script designed as a user-defined API.\r\n" +
+                                           "  - Ad Hoc Data Source: If the Catalog item is a DataMiner Automation script designed for an ad hoc data source integration.\r\n" +
+                                           "  - ChatOps Extension: If the Catalog item is a DataMiner Automation script designed as a ChatOps extension.\r\n" +
+                                           "  - Connector: If the Catalog item is a DataMiner XML connector.\r\n" +
+                                           "  - Visual Overview: If the Catalog item is a Microsoft Visio design.\r\n" +
+                                           "  - Custom Solution: If the Catalog item is a DataMiner Solution.\r\n" +
+                                           "  - Dashboard: If the Catalog item is a DataMiner dashboard.\r\n" +
+                                           "  - Data Transformer: If the Catalog item is a Data Transformer.\r\n" +
+                                           "  - Scripted Connector: If the Catalog item is a DataMiner scripted connector.\r\n" +
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CatalogYaml"/> class.
