@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -174,7 +175,7 @@
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains($"tags:{Environment.NewLine}  - newTag"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => Regex.IsMatch(s, @"tags:\s*(?:-\s*\S+\s*)*-\s*newTag", RegexOptions.Multiline))), Times.Once);
         }
 
         [TestMethod]
@@ -230,8 +231,8 @@
         [TestMethod]
         public async Task ProcessCatalogYamlAsync_ShouldInferTypeFromRepositoryName_WhenNoTypeIsDefined()
         {
-            // Arrange{ "DISMACRO", "dismacro" },
-            var repoName = "SLC-DISMACRO-testRepo";
+            // **SC**: `Scripted Connector`
+            var repoName = "SLC-SC-testRepo";
             var yamlContent = "id: testId\nshort_description: test description\ntags: [testTag]";
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
@@ -240,7 +241,7 @@
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: dismacro"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: Scripted Connector"))), Times.Once);
         }
 
         [TestMethod]
@@ -434,7 +435,7 @@
             await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: adhocdatasource"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("type: Ad Hoc Data Source"))), Times.Once);
         }
 
         [TestMethod]

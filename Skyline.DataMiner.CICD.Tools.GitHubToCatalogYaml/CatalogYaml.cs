@@ -72,7 +72,7 @@
                                            "  - Standard Solution: If the Catalog item is a DataMiner Solution that is an out-of-the-box solution for a specific use case or application.\r\n" +
                                            "  - System Health: If the Catalog item is intended to monitor the health of a system.\r\n" +
                                            "  - User-Defined API: If the Catalog item is a DataMiner Automation script designed as a user-defined API.\r\n" +
-                                           "  - Visual Overview: If the Catalog item is a Microsoft Visio design.\r\n" +
+                                           "  - Visual Overview: If the Catalog item is a Microsoft Visio design.\r\n";
             
         /// <summary>
         /// Initializes a new instance of the <see cref="CatalogYaml"/> class.

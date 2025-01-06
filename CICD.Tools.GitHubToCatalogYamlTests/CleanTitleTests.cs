@@ -8,13 +8,13 @@
     public class CleanTitleTests
     {
         [TestMethod]
-        [DataRow("SkylineCommunications/SLC-AS-MediaOps-Apps", "MediaOps-Apps", "automationscript")]
-        [DataRow("SLC-AS-MediaOps-Apps", "MediaOps-Apps", "automationscript")]
-        [DataRow("SkylineCommunications/PCKTV-AS-RegressionTests", "RegressionTests", "automationscript")]
-        [DataRow("SkylineCommunications/RBM-AS-Playout", "Playout", "automationscript")]
-        [DataRow("SkylineCommunications/SLC-Doc-Vodafone-Deutschland-GmbH", "Vodafone-Deutschland-GmbH", "documentation")]
-        [DataRow("SkylineCommunications/FOXA-GQIDS-GetAppearTVData", "GetAppearTVData", "adhocdatasource")]
-        [DataRow("SkylineCommunications/YLE-C-Avid-iNewsOrder-Ingest", "Avid-iNewsOrder-Ingest", "connector")]
+        [DataRow("SkylineCommunications/SLC-AS-MediaOps-Apps", "MediaOps-Apps", "Automation")]
+        [DataRow("SLC-AS-MediaOps-Apps", "MediaOps-Apps", "Automation")]
+        [DataRow("SkylineCommunications/PCKTV-AS-RegressionTests", "RegressionTests", "Automation")]
+        [DataRow("SkylineCommunications/RBM-AS-Playout", "Playout", "Automation")]
+        [DataRow("SkylineCommunications/SLC-Doc-Vodafone-Deutschland-GmbH", "Vodafone-Deutschland-GmbH", "Custom Solution")]
+        [DataRow("SkylineCommunications/FOXA-GQIDS-GetAppearTVData", "GetAppearTVData", "Ad Hoc Data Source")]
+        [DataRow("SkylineCommunications/YLE-C-Avid-iNewsOrder-Ingest", "Avid-iNewsOrder-Ingest", "Connector")]
         [DataRow("SkylineCommunications/ngx-dwa-theme-creation-helper", "ngx-dwa-theme-creation-helper", null)]
         public void CleanTitleTestHappy(string input, string expectedTitle, string expectedType)
         {
