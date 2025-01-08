@@ -196,6 +196,40 @@
         }
 
         [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldFilterTagsThatMatchTypes_NoNameType()
+        {
+            // Arrange
+            var repoName = "SLC-testRepo";
+            var yamlContent = "id: testId\nshort_description: test description";
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
+            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string> { "dataminer-automation-script", "newTag", "dataminer", "otherTag", "dataminer-connector" });
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => Regex.IsMatch(s, @"tags:\s*\n\s*-\s*newTag\s*\n\s*-\s*otherTag\s*(\n\s*#.*|\s*)*$", RegexOptions.Multiline))), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldFilterTagsThatMatchTypes_TypeInYaml()
+        {
+            // Arrange
+            var repoName = "SLC-testRepo";
+            var yamlContent = "type: Automation Script\nid: testId\nshort_description: test description";
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
+            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string> { "dataminer-automation-script", "newTag", "dataminer", "otherTag", "dataminer-connector" });
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => Regex.IsMatch(s, @"tags:\s*\n\s*-\s*newTag\s*\n\s*-\s*otherTag\s*(\n\s*#.*|\s*)*$", RegexOptions.Multiline))), Times.Once);
+        }
+
+        [TestMethod]
         public async Task ProcessCatalogYamlAsync_ShouldUseRepositoryNameAsTitle_WhenTitleIsMissing()
         {
             // Arrange
