@@ -184,7 +184,7 @@
                 catalogYaml.Tags = new List<string>();
             }
 
-            if(catalogYaml.Tags.Count >= 5)
+            if (catalogYaml.Tags.Count >= 5)
             {
                 logger.LogDebug("Catalog YAML has the max amount of tags already. Skipping the adding GitHub topics step.");
                 return;
@@ -245,17 +245,22 @@
             // Always check the tags
             if (catalogYaml.Tags != null)
             {
+                List<string> filteredTopics = new List<string>();
                 foreach (var topic in catalogYaml.Tags)
                 {
                     var inferredType = InferArtifactContentType(topic);
                     if (!String.IsNullOrWhiteSpace(inferredType))
                     {
                         catalogYaml.Type = inferredType;
-                        catalogYaml.Tags.Remove(topic);
                         logger.LogDebug($"Item Type could be inferred from repository topics {catalogYaml.Type}.");
-                        break;
+                    }
+                    else
+                    {
+                        filteredTopics.Add(topic);
                     }
                 }
+
+                catalogYaml.Tags = filteredTopics;
             }
 
             if (String.IsNullOrWhiteSpace(catalogYaml.Type))
