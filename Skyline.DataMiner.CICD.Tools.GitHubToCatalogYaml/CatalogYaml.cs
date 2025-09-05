@@ -25,7 +25,6 @@
 
         private const string ownersComment = "[Optional]\r\n" +
                                              "People who are responsible for this Catalog item. Might be developers, but this is not required.\r\n" +
-                                             "Format: 'name <email> (url)'\r\n" +
                                              "  The name is required; max 256 characters.\r\n" +
                                              "  The email and url are optional, and should be in valid email/URL formats.";
 
