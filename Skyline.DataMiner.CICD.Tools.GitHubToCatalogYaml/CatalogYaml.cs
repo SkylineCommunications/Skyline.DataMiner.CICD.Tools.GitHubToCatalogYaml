@@ -156,18 +156,21 @@
         /// <summary>
         /// Gets or sets the vendor ID associated with the catalog entry.
         /// </summary>
+        /// <value>A string representing the vendor ID.</value>
         [YamlMember(Description = vendorIdComment, Order = 8)]
         public string VendorId { get; set; }
 
         /// <summary>
         /// Gets or sets the market name associated with the catalog entry.
         /// </summary>
+        /// <value>A string representing the market name.</value>
         [YamlMember(Description = marketNameComment, Order = 9)]
         public string MarketName { get; set; }
 
         /// <summary>
         /// Gets or sets the element type associated with the catalog entry.
         /// </summary>
+        /// <value>A string representing the element type.</value>
         [YamlMember(Description = elementTypeComment, Order = 10)]
         public string ElementType { get; set; }
     }
