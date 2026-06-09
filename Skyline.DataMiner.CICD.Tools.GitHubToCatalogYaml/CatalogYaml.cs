@@ -61,7 +61,6 @@
                                            "  - ChatOps Extension: If the Catalog item is a DataMiner Automation script designed as a ChatOps extension.\r\n" +
                                            "  - Connector: If the Catalog item is a DataMiner XML connector.\r\n" +
                                            "  - Custom Solution: If the Catalog item is a DataMiner Solution.\r\n" +
-                                           "  - Data Query: If the Catalog item is a GQI data query.\r\n" +
                                            "  - Data Transformer: Includes a data transformer that enables you to modify data using a GQI data query before making it available to users in low-code apps or dashboards.\r\n" +
                                            "  - Dashboard: If the Catalog item is a DataMiner dashboard.\r\n" +
                                            "  - DevTool: If the Catalog item is a DevTool.\r\n" +
@@ -72,6 +71,22 @@
                                            "  - System Health: If the Catalog item is intended to monitor the health of a system.\r\n" +
                                            "  - User-Defined API: If the Catalog item is a DataMiner Automation script designed as a user-defined API.\r\n" +
                                            "  - Visual Overview: If the Catalog item is a Microsoft Visio design.\r\n";
+
+        private const string vendorIdComment = "[Optional]\r\n" +
+                                               "The ID of the vendor.\r\n" +
+                                               "This vendor ID can be retrieved using the public Catalog API.\r\n" +
+                                               "If the vendor ID does not exist, the registration or update will fail with HTTP status code 400.\r\n" +
+                                               "If the vendor ID is '00000000-0000-0000-0000-000000000000', the vendor will be unset.\r\n" +
+                                               "If the vendor ID is not provided during the initial registration, the vendor will be unset.\r\n" +
+                                               "If the vendor ID is not provided during an update, the vendor will be unchanged and keep the previously set value.\r\n" +
+                                               "  Must be a valid GUID.";
+
+        private const string marketNameComment = "[Optional]\r\n" +
+                                                 "The name of the market the Catalog item belongs to.";
+
+        private const string elementTypeComment = "[Optional]\r\n" +
+                                                  "The type of the element.\r\n" +
+                                                  "This can only be applied to Catalog items with the type Connector.";
             
         /// <summary>
         /// Initializes a new instance of the <see cref="CatalogYaml"/> class.
@@ -137,6 +152,24 @@
         /// <value>A string representing the type of the entry.</value>
         [YamlMember(Description = typeComment, Order = 0)]
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vendor ID associated with the catalog entry.
+        /// </summary>
+        [YamlMember(Description = vendorIdComment, Order = 8)]
+        public string VendorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the market name associated with the catalog entry.
+        /// </summary>
+        [YamlMember(Description = marketNameComment, Order = 9)]
+        public string MarketName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the element type associated with the catalog entry.
+        /// </summary>
+        [YamlMember(Description = elementTypeComment, Order = 10)]
+        public string ElementType { get; set; }
     }
 
     /// <summary>
