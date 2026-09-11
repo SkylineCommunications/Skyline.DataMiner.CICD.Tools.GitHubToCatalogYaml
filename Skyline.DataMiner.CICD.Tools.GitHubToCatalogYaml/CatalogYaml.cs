@@ -26,7 +26,8 @@
         private const string ownersComment = "[Optional]\r\n" +
                                              "People who are responsible for this Catalog item. Might be developers, but this is not required.\r\n" +
                                              "  The name is required; max 256 characters.\r\n" +
-                                             "  The email and url are optional, and should be in valid email/URL formats.";
+                                             "  The email and url are optional, and should be in valid email/URL formats.\r\n" +
+                                             "  The role identifies the owner's responsibility.";
 
         private const string shortDescriptionComment = "[Optional]\r\n" +
                                                        "General information about the Catalog item.\r\n" +
@@ -191,6 +192,13 @@
         /// </summary>
         /// <value>A string representing the owner's name.</value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the role of the owner.
+        /// </summary>
+        /// <value>A string representing the owner's role.</value>
+        [YamlMember(Alias = "role")]
+        public string Role { get; set; }
 
         /// <summary>
         /// Gets or sets the URL of the owner's profile or webpage.
