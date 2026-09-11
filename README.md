@@ -19,7 +19,7 @@ The **Skyline.DataMiner.CICD.Tools.GitHubToCatalogYaml** tool automates the crea
 | Topics                         | `Tags`                 | GitHub topics are added as tags for the catalog item.                                                           |
 | URL                            | `SourceCodeUrl`        | Generated as `https://github.com/{owner}/{repo}`, if missing in `catalog.yml`.                                  |
 | Variable: `CATALOGIDENTIFIER`  | `Id`                   | If not specified in the existing YAML or as a variable, an identifier is generated automatically for each catalog entry. |
-| Owners                         | `Owners`               | Customizable, with owner email, name, and URL settings.                                                         |
+| Owners                         | `Owners`               | Customizable, with owner email, name, role, and URL settings.                                                   |
 
 ## **Auto-Generated Catalog YAML File**
 

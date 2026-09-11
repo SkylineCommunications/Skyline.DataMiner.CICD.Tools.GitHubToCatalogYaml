@@ -93,6 +93,31 @@
         }
 
         [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldPreserveOwnerRole_WhenOwnerHasRole()
+        {
+            // Arrange
+            var repoName = "SLC-AS-testRepo";
+            var yamlContent = "id: testId\nshort_description: test description\nowners:\n  - name: Jane Doe\n    email: jane.doe@example.com\n    role: Product Owner";
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true);
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            mockFileSystem.Verify(
+                fs => fs.File.WriteAllText(
+                    catalogFilePath,
+                    It.Is<string>(s => s.Contains("role: Product Owner"))),
+                Times.Once);
+            mockFileSystem.Verify(
+                fs => fs.File.WriteAllText(
+                    autoGeneratorFilePath,
+                    It.Is<string>(s => s.Contains("role: Product Owner"))),
+                Times.Once);
+        }
+
+        [TestMethod]
         public async Task ProcessCatalogYamlAsync_ShouldCreateNewManifestFile_WhenCatalogYamlNotExistsButManifestExists()
         {
             // Arrange
