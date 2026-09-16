@@ -569,5 +569,47 @@
             mockFileSystem.Verify(fs => fs.Directory.TryAllowWritesOnDirectory("testAutoGenDirectory"), Times.Once);
             mockFileSystem.Verify(fs => fs.File.WriteAllText(expectedAutoGenPath, It.IsAny<String>()), Times.Once);
         }
+
+        [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldSeparatePropertyCommentsAndDocumentValueFormats()
+        {
+            // Arrange
+            var repoName = "SLC-AS-testRepo";
+            var yamlContent = "type: Automation\n" +
+                              "id: existing-id\n" +
+                              "title: Existing title\n" +
+                              "short_description: Existing description\n" +
+                              "source_code_url: https://example.com/source\n" +
+                              "documentation_url: https://example.com/docs\n" +
+                              "owners:\n" +
+                              "  - name: Existing owner\n" +
+                              "tags:\n" +
+                              "  - Existing tag\n" +
+                              "vendor_id: existing-vendor-id\n" +
+                              "market_name: Existing market\n" +
+                              "element_type: Existing element";
+            var generatedYaml = new List<string>();
+
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true);
+            mockFileSystem.Setup(fs => fs.File.Exists(autoGeneratorFilePath)).Returns(false);
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
+            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string>());
+            mockFileSystem
+                .Setup(fs => fs.File.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((_, contents) => generatedYaml.Add(contents));
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            generatedYaml.Should().HaveCount(2);
+            var output = generatedYaml[0].Replace("\r\n", "\n");
+
+            output.Should().Contain("# If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by creating a `catalog.yml` file in the root of your repository.\n\n# [Required]");
+            output.Should().Contain("#   - Visual Overview: If the Catalog item is a Microsoft Visio design.\n\ntype: Automation\n\n# [Required]");
+            output.Should().Contain("#   Example:\n#   owners:\n#     - name: 'Owner 1 name'\n#     - name: 'Owner 2 name'\nowners:");
+            output.Should().Contain("#   Example:\n#   tags: [MyTag1,MyTag2]\ntags:");
+            output.Should().NotContain("# \n");
+        }
     }
 }

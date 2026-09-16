@@ -372,13 +372,42 @@
             // Delete the file if it already exists. Overwriting an existing file is not allowed in GitHub.
             fs.File.DeleteFile(outputPath);
             Thread.Sleep(500);
-            var updatedYaml = serializer.Serialize(catalogYaml);
+            var updatedYaml = AddBlankLinesBetweenProperties(serializer.Serialize(catalogYaml));
 
             var parentDir = fs.Path.GetDirectoryName(outputPath);
             fs.Directory.CreateDirectory(parentDir);
             fs.Directory.TryAllowWritesOnDirectory(parentDir);
 
             fs.File.WriteAllText(outputPath, updatedYaml);
+        }
+
+        private static string AddBlankLinesBetweenProperties(string yaml)
+        {
+            string lineEnding = yaml.Contains("\r\n", StringComparison.Ordinal) ? "\r\n" : "\n";
+            var lines = yaml.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var formattedLines = new List<string>(lines.Length + 10);
+            bool inCommentBlock = false;
+
+            foreach (var line in lines)
+            {
+                if (line.StartsWith("#", StringComparison.Ordinal))
+                {
+                    if (!inCommentBlock && formattedLines.Count > 0 && !String.IsNullOrEmpty(formattedLines[^1]))
+                    {
+                        formattedLines.Add(String.Empty);
+                    }
+
+                    inCommentBlock = true;
+                    formattedLines.Add(line.Length == 1 || String.IsNullOrWhiteSpace(line.Substring(1)) ? String.Empty : line);
+                }
+                else
+                {
+                    inCommentBlock = false;
+                    formattedLines.Add(line);
+                }
+            }
+
+            return String.Join(lineEnding, formattedLines);
         }
     }
 }
