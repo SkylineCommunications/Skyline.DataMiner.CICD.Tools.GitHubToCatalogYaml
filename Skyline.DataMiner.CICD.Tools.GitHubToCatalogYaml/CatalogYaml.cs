@@ -43,12 +43,14 @@
                                                     "  Max length: 2048 characters";
 
         private const string tagsComment = "[Optional]\r\n" +
-                                           "Comma-separated list of tags that allow you to categorize your Catalog items.\r\n" +
+                                           "Tags that allow you to categorize your Catalog items.\r\n" +
                                            "  Max number of tags: 5\r\n" +
                                            "  Max length: 50 characters.\r\n" +
                                            "  Cannot contain newlines.\r\n" +
                                            "  Example:\r\n" +
-                                           "  tags: [MyTag1,MyTag2]";
+                                           "  tags:\r\n" +
+                                           "    - MyTag1\r\n" +
+                                           "    - MyTag2";
 
         private const string titleComment = "[Required]\r\n" +
                                             "The human-friendly name of the Catalog item.\r\n" +
