@@ -372,6 +372,7 @@
             // Delete the file if it already exists. Overwriting an existing file is not allowed in GitHub.
             fs.File.DeleteFile(outputPath);
             Thread.Sleep(500);
+            // YamlDotNet serializes newlines in descriptions as commented lines, so normalize them after serialization.
             var updatedYaml = AddBlankLinesBetweenProperties(serializer.Serialize(catalogYaml));
 
             var parentDir = fs.Path.GetDirectoryName(outputPath);
