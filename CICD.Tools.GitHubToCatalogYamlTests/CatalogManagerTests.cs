@@ -128,20 +128,23 @@
         }
 
 
-        [TestMethod]
-        public async Task ProcessCatalogYamlAsync_ShouldAssignNewId_WhenIdIsMissing()
+        [DataTestMethod]
+        [DataRow("SLC-AS-testRepo", true)]
+        [DataRow("SLC-C-testRepo", false)]
+        public async Task ProcessCatalogYamlAsync_ShouldHandleId_WhenIdIsMissing(string repoName, bool shouldAssignNewId)
         {
             // Arrange
-            var repoName = "SLC-AS-testRepo";
             var yamlContent = "short_description: test description\ntags: [testTag]";
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
 
             // Act
-            await catalogManager.ProcessCatalogYamlAsync(repoName, "newCatalogId");
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("id: newCatalogId"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => shouldAssignNewId
+                ? Regex.IsMatch(s, @"(?m)^id: [0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\r?$", RegexOptions.IgnoreCase)
+                : Regex.IsMatch(s, @"(?m)^id: ''\r?$"))), Times.Once);
         }
 
         [TestMethod]
@@ -568,6 +571,154 @@
             mockFileSystem.Verify(fs => fs.Directory.CreateDirectory("testAutoGenDirectory"), Times.Once);
             mockFileSystem.Verify(fs => fs.Directory.TryAllowWritesOnDirectory("testAutoGenDirectory"), Times.Once);
             mockFileSystem.Verify(fs => fs.File.WriteAllText(expectedAutoGenPath, It.IsAny<String>()), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task ProcessCatalogYamlAsync_ShouldSeparatePropertyCommentsAndDocumentValueFormats()
+        {
+            // Arrange
+            var repoName = "SLC-AS-testRepo";
+            var yamlContent = "type: Automation\n" +
+                              "id: existing-id\n" +
+                              "title: Existing title\n" +
+                              "short_description: Existing description\n" +
+                              "source_code_url: https://example.com/source\n" +
+                              "documentation_url: https://example.com/docs\n" +
+                              "owners:\n" +
+                              "  - email: owner@example.com\n" +
+                              "    name: Existing owner\n" +
+                              "    url: https://example.com/owner\n" +
+                              "tags:\n" +
+                              "  - Existing tag\n" +
+                              "vendor_id: existing-vendor-id\n" +
+                              "market_name: Existing market\n" +
+                              "element_type: Existing element";
+            var generatedYaml = new List<string>();
+
+            mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true);
+            mockFileSystem.Setup(fs => fs.File.Exists(autoGeneratorFilePath)).Returns(false);
+            mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
+            mockGitHubService.Setup(s => s.GetRepositoryTopicsAsync()).ReturnsAsync(new List<string>());
+            mockFileSystem
+                .Setup(fs => fs.File.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((_, contents) => generatedYaml.Add(contents));
+
+            // Act
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
+
+            // Assert
+            generatedYaml.Should().HaveCount(2);
+            var output = generatedYaml[0].Replace("\r\n", "\n");
+            var expectedLines = new[]
+            {
+                "# WARNING! DO NOT CHANGE THIS FILE.",
+                "# If you wish to make adjustments based on the `auto-generated-catalog.yml` file, you can do so by creating a `catalog.yml` file in the root of your repository.",
+                String.Empty,
+                "# [Required]",
+                "# Possible values for the Catalog item that can be deployed on a DataMiner System:",
+                "#   - Automation: If the Catalog item is a general-purpose DataMiner Automation script.",
+                "#   - Ad Hoc Data Source: If the Catalog item is a DataMiner Automation script designed for an ad hoc data source integration.",
+                "#   - ChatOps Extension: If the Catalog item is a DataMiner Automation script designed as a ChatOps extension.",
+                "#   - Connector: If the Catalog item is a DataMiner XML connector.",
+                "#   - Custom Solution: If the Catalog item is a DataMiner Solution.",
+                "#   - Data Transformer: Includes a data transformer that enables you to modify data using a GQI data query before making it available to users in low-code apps or dashboards.",
+                "#   - Dashboard: If the Catalog item is a DataMiner dashboard.",
+                "#   - DevTool: If the Catalog item is a DevTool.",
+                "#   - Learning & Sample: If the Catalog item is a sample.",
+                "#   - Product Solution: If the Catalog item is a DataMiner Solution that is an out-of-the-box solution for a specific product.",
+                "#   - Scripted Connector: If the Catalog item is a DataMiner scripted connector.",
+                "#   - Standard Solution: If the Catalog item is a DataMiner Solution that is an out-of-the-box solution for a specific use case or application.",
+                "#   - System Health: If the Catalog item is intended to monitor the health of a system.",
+                "#   - User-Defined API: If the Catalog item is a DataMiner Automation script designed as a user-defined API.",
+                "#   - Visual Overview: If the Catalog item is a Microsoft Visio design.",
+                String.Empty,
+                "type: Automation",
+                String.Empty,
+                "# [Required]",
+                "# The ID of the Catalog item.",
+                "# All registered versions for the same ID are shown together in the Catalog.",
+                "# This ID can not be changed.",
+                "# If the ID is not filled in, the registration will fail with HTTP status code 500.",
+                "# If the ID is filled in but does not exist yet, a new Catalog item will be registered with this ID.",
+                "# If the ID is filled in but does exist, properties of the item will be overwritten.",
+                "#   Must be a valid GUID.",
+                "id: existing-id",
+                String.Empty,
+                "# [Required]",
+                "# The human-friendly name of the Catalog item.",
+                "# Can be changed at any time.",
+                "#   Max length: 100 characters.",
+                "#   Cannot contain newlines.",
+                "#   Cannot contain leading or trailing whitespace characters.",
+                "title: Existing title",
+                String.Empty,
+                "# [Optional]",
+                "# General information about the Catalog item.",
+                "#   Max length: 100,000 characters",
+                "# Currently not shown in the Catalog UI but will be supported in the near future.",
+                "short_description: Existing description",
+                String.Empty,
+                "# [Optional]",
+                "# A valid URL that points to the source code.",
+                "#   A valid URL",
+                "#   Max length: 2048 characters",
+                "source_code_url: https://example.com/source",
+                String.Empty,
+                "# [Optional]",
+                "# A valid URL that points to documentation.",
+                "#   A valid URL",
+                "#   Max length: 2048 characters",
+                "# Currently not shown in the Catalog UI but will be supported in the near future.",
+                "documentation_url: https://example.com/docs",
+                String.Empty,
+                "# [Optional]",
+                "# People who are responsible for this Catalog item. Might be developers, but this is not required.",
+                "#   The name is required; max 256 characters.",
+                "#   The email and url are optional, and should be in valid email/URL formats.",
+                "#   Example:",
+                "#   owners:",
+                "#     - name: 'Owner 1 name'",
+                "#     - name: 'Owner 2 name'",
+                "owners:",
+                "  - email: owner@example.com",
+                "    name: Existing owner",
+                "    url: https://example.com/owner",
+                String.Empty,
+                "# [Optional]",
+                "# Tags that allow you to categorize your Catalog items.",
+                "#   Max number of tags: 5",
+                "#   Max length: 50 characters.",
+                "#   Cannot contain newlines.",
+                "#   Example:",
+                "#   tags:",
+                "#     - MyTag1",
+                "#     - MyTag2",
+                "tags:",
+                "  - Existing tag",
+                String.Empty,
+                "# [Optional]",
+                "# The ID of the vendor.",
+                "# This vendor ID can be retrieved using the public Catalog API.",
+                "# If the vendor ID does not exist, the registration or update will fail with HTTP status code 400.",
+                "# If the vendor ID is '00000000-0000-0000-0000-000000000000', the vendor will be unset.",
+                "# If the vendor ID is not provided during the initial registration, the vendor will be unset.",
+                "# If the vendor ID is not provided during an update, the vendor will be unchanged and keep the previously set value.",
+                "#   Must be a valid GUID.",
+                "vendor_id: existing-vendor-id",
+                String.Empty,
+                "# [Optional]",
+                "# The name of the market the Catalog item belongs to.",
+                "market_name: Existing market",
+                String.Empty,
+                "# [Optional]",
+                "# The type of the element.",
+                "# This can only be applied to Catalog items with the type Connector.",
+                "element_type: Existing element",
+                String.Empty,
+            };
+
+            output.Split('\n').Should().Equal(expectedLines);
+            generatedYaml[1].Replace("\r\n", "\n").Should().Be(output);
         }
     }
 }
