@@ -128,20 +128,23 @@
         }
 
 
-        [TestMethod]
-        public async Task ProcessCatalogYamlAsync_ShouldAssignNewId_WhenIdIsMissing()
+        [DataTestMethod]
+        [DataRow("SLC-AS-testRepo", true)]
+        [DataRow("SLC-C-testRepo", false)]
+        public async Task ProcessCatalogYamlAsync_ShouldHandleId_WhenIdIsMissing(string repoName, bool shouldAssignNewId)
         {
             // Arrange
-            var repoName = "SLC-AS-testRepo";
             var yamlContent = "short_description: test description\ntags: [testTag]";
             mockFileSystem.Setup(fs => fs.File.Exists(catalogFilePath)).Returns(true); // catalog.yml exists
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
 
             // Act
-            await catalogManager.ProcessCatalogYamlAsync(repoName, "newCatalogId");
+            await catalogManager.ProcessCatalogYamlAsync(repoName);
 
             // Assert
-            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => s.Contains("id: newCatalogId"))), Times.Once);
+            mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => shouldAssignNewId
+                ? Regex.IsMatch(s, @"(?m)^id: [0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\r?$", RegexOptions.IgnoreCase)
+                : Regex.IsMatch(s, @"(?m)^id: ''\r?$"))), Times.Once);
         }
 
         [TestMethod]
