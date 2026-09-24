@@ -129,9 +129,10 @@
 
 
         [DataTestMethod]
-        [DataRow("SLC-AS-testRepo", true)]
-        [DataRow("SLC-C-testRepo", false)]
-        public async Task ProcessCatalogYamlAsync_ShouldHandleId_WhenIdIsMissing(string repoName, bool shouldAssignNewId)
+        [DataRow("SLC-AS-testRepo", true, true)]
+        [DataRow("SLC-AS-testRepo", false, false)]
+        [DataRow("SLC-C-testRepo", true, false)]
+        public async Task ProcessCatalogYamlAsync_ShouldHandleId_WhenIdIsMissing(string repoName, bool shouldAssignNewId, bool useDefault)
         {
             // Arrange
             var yamlContent = "short_description: test description\ntags: [testTag]";
@@ -139,7 +140,14 @@
             mockFileSystem.Setup(fs => fs.File.ReadAllText(catalogFilePath)).Returns(yamlContent);
 
             // Act
-            await catalogManager.ProcessCatalogYamlAsync(repoName);
+            if (useDefault)
+            {
+                await catalogManager.ProcessCatalogYamlAsync(repoName);
+            }
+            else
+            {
+                await catalogManager.ProcessCatalogYamlAsync(repoName, "", shouldAssignNewId);
+            }
 
             // Assert
             mockFileSystem.Verify(fs => fs.File.WriteAllText(catalogFilePath, It.Is<string>(s => shouldAssignNewId
