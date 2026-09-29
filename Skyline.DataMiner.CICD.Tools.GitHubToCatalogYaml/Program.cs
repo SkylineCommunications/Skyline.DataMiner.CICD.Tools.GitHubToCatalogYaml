@@ -64,20 +64,30 @@
                 IsRequired = false
             };
 
+            var allowNewCatalogGuid = new Option<bool>(
+                name: "--allow-new-catalog-guid",
+                description: "(optional) Indicates whether a new catalog GUID may be generated.")
+            {
+                IsRequired = false
+            };
+
+            allowNewCatalogGuid.SetDefaultValue(true);
+
             var rootCommand = new RootCommand("Extends or creates a catalog.yml file with data retrieved from GitHub")
             {
                 isDebug,
                 githubToken,
                 githubRepository,
                 workspace,
-                catalogIdentifier
+                catalogIdentifier,
+                allowNewCatalogGuid
             };
 
-            rootCommand.SetHandler(Process, isDebug, githubToken, githubRepository, workspace, catalogIdentifier);
+            rootCommand.SetHandler(Process, isDebug, githubToken, githubRepository, workspace, catalogIdentifier, allowNewCatalogGuid);
 
             return await rootCommand.InvokeAsync(args);
         }
-        private static async Task<int> Process(bool isDebug, string githubToken, string githubRepository, string workspace, string catalogIdentifier)
+        private static async Task<int> Process(bool isDebug, string githubToken, string githubRepository, string workspace, string catalogIdentifier, bool allowNewCatalogGuid)
         {
             try
             {
@@ -98,7 +108,7 @@
                     var catalogManager = new CatalogManager(fs, logger, gitHubService, workspace);
 
                     // Call the method to process the catalog.yml file
-                    await catalogManager.ProcessCatalogYamlAsync(githubRepository, catalogIdentifier);
+                    await catalogManager.ProcessCatalogYamlAsync(githubRepository, catalogIdentifier, allowNewCatalogGuid);
 
                     logger.LogInformation("Process completed successfully.");
                 }

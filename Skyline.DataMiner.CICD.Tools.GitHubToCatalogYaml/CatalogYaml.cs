@@ -26,7 +26,11 @@
         private const string ownersComment = "[Optional]\r\n" +
                                              "People who are responsible for this Catalog item. Might be developers, but this is not required.\r\n" +
                                              "  The name is required; max 256 characters.\r\n" +
-                                             "  The email and url are optional, and should be in valid email/URL formats.";
+                                             "  The email and url are optional, and should be in valid email/URL formats.\r\n" +
+                                             "  Example:\r\n" +
+                                             "  owners:\r\n" +
+                                             "    - name: 'Owner 1 name'\r\n" +
+                                             "    - name: 'Owner 2 name'";
 
         private const string shortDescriptionComment = "[Optional]\r\n" +
                                                        "General information about the Catalog item.\r\n" +
@@ -43,7 +47,10 @@
                                            "  Max number of tags: 5\r\n" +
                                            "  Max length: 50 characters.\r\n" +
                                            "  Cannot contain newlines.\r\n" +
-                                           "  Cannot contain leading or trailing whitespace characters.";
+                                           "  Example:\r\n" +
+                                           "  tags:\r\n" +
+                                           "    - MyTag1\r\n" +
+                                           "    - MyTag2";
 
         private const string titleComment = "[Required]\r\n" +
                                             "The human-friendly name of the Catalog item.\r\n" +
