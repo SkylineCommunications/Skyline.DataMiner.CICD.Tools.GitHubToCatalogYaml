@@ -204,7 +204,7 @@
         /// Gets or sets the role of the owner.
         /// </summary>
         /// <value>A string representing the owner's role.</value>
-        [YamlMember(Alias = "role")]
+        [YamlMember(Alias = "role", DefaultValuesHandling = DefaultValuesHandling.OmitNull)]
         public string Role { get; set; }
 
         /// <summary>

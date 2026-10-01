@@ -716,7 +716,6 @@
                 "owners:",
                 "  - email: owner@example.com",
                 "    name: Existing owner",
-                "    role: ",
                 "    url: https://example.com/owner",
                 String.Empty,
                 "# [Optional]",
