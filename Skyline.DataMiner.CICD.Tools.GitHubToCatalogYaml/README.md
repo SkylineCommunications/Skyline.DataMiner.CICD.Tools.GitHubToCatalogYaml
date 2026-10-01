@@ -36,6 +36,8 @@ Skyline Communications offers world-class solutions to leading companies across 
 
 This tool automates the process of generating or updating a `catalog.yml` file for a GitHub repository. It pulls information such as the repository description, GitHub topics, and inferred artifact types to ensure that the catalog file is correctly populated with relevant metadata.
 
+Owner entries can include the owner's name, email, role, and URL. The role is preserved when the catalog YAML is parsed and generated.
+
 > **Important**: The process will fail if it cannot detect the **Catalog Item Type** from either the repository name or the GitHub topics. Ensure the repository follows naming conventions or uses the appropriate topics to avoid this failure.
 
 ## Command Options
