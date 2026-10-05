@@ -664,7 +664,6 @@
                 "#   - System Health: If the Catalog item is intended to monitor the health of a system.",
                 "#   - User-Defined API: If the Catalog item is a DataMiner Automation script designed as a user-defined API.",
                 "#   - Visual Overview: If the Catalog item is a Microsoft Visio design.",
-                String.Empty,
                 "type: Automation",
                 String.Empty,
                 "# [Required]",
